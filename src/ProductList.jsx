@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { addItem } from './CartSlice';
 import './ProductList.css'
 import CartItem from './CartItem';
 function ProductList({ onHomeClick }) {
@@ -240,7 +242,7 @@ function ProductList({ onHomeClick }) {
 
     const handleCartClick = (e) => {
         e.preventDefault();
-        setShowCart(true); // Set showCart to true when cart icon is clicked
+        setShowCart(true); 
     };
     const handlePlantsClick = (e) => {
         e.preventDefault();
@@ -252,7 +254,18 @@ function ProductList({ onHomeClick }) {
         e.preventDefault();
         setShowCart(false);
     };
+    const [added ,setAdded] = useState({});
+    const dispatch = useDispatch();
+    const handleAdd = (plant)=>{
+           dispatch(addItem(plant));
+           setAdded((prev)=>({
+            ...prev,
+            [plant.name] : true,
+           }))
+
+    }
     return (
+        
         <div>
             <div className="navbar" style={styleObj}>
                 <div className="tag">
@@ -274,7 +287,41 @@ function ProductList({ onHomeClick }) {
             </div>
             {!showCart ? (
                 <div className="product-grid">
-
+                  {
+                    plantsArray.map(category=>(
+                        <section key={category.category}>
+                            
+                         <h2 className='head' >{category.category}</h2>
+                        <div className="product-list">
+                           
+                            {category.plants.map(plant=>(
+                                <div className="product-card" key= {plant.name}>
+                                    <div className="product-title">
+                                        {plant.name}
+                                    </div>
+                                    <div className="product-image">
+                                        <img src={`${plant.image}`} alt="" />
+                                    </div>
+                                     <div className="descrip">
+                                        <p>{plant.description}</p>
+                                     </div>
+                                     <div className="product-price">
+                                        {plant.cost}
+                                     </div>
+                                   
+                                    <button
+                                        className='product-button'
+                                        onClick={ ()=>(handleAdd(plant))}
+                                        >
+                                        {`${added[plant.name]? `Added` : `Add to Cart` }`}
+                                    </button>
+                                     
+                                </div>
+                            ))}
+                        </div>
+                        </section>
+                    ))
+                  }
 
                 </div>
             ) : (

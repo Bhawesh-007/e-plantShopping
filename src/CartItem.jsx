@@ -1,36 +1,46 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { removeItem, updateQuantity } from './CartSlice';
-import './CartItem.css';
+import './CartItem.css'; 
+//now this is the item card which comes when i clikc on the cart option
 
 const CartItem = ({ onContinueShopping }) => {
   const cart = useSelector(state => state.cart.items);
   const dispatch = useDispatch();
 
   // Calculate total amount for all products in the cart
-  const calculateTotalAmount = () => {
- 
-  };
+  //what i will do is just use the name of the plant map it and find the cost and give the total price
+   const calculateTotalAmount = () =>
+  cart.reduce((sum, el) => {
+    const cost = Number(el.cost.replace('$', ''));
+    return sum + cost * Number(el.quantity);
+  }, 0);
 
   const handleContinueShopping = (e) => {
-   
+    onContinueShopping(e);
   };
 
 
 
   const handleIncrement = (item) => {
-  };
+ dispatch(updateQuantity({name : item.name , quantity : item.quantity+1}))  
+};
 
   const handleDecrement = (item) => {
-   
+      if(item.quantity>1){
+        dispatch(updateQuantity({name : item.name , quantity : item.quantity-1}))
+      }
   };
 
   const handleRemove = (item) => {
+      dispatch(removeItem(item));
   };
 
   // Calculate total cost based on quantity for an item
-  const calculateTotalCost = (item) => {
-  };
+ const calculateTotalCost = (item) => {
+  const cost = Number(item.cost.replace('$',''));
+  return cost * Number(item.quantity);
+};
 
   return (
     <div className="cart-container">

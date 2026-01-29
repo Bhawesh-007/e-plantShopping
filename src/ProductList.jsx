@@ -5,7 +5,7 @@ import './ProductList.css'
 import CartItem from './CartItem';
 function ProductList({ onHomeClick }) {
     const [showCart, setShowCart] = useState(false);
-    const [showPlants, setShowPlants] = useState(false); // State to control the visibility of the About Us page
+    // const [showPlants, setShowPlants] = useState(false); // State to control the visibility of the About Us page
 
     const plantsArray = [
         {
@@ -295,7 +295,7 @@ function ProductList({ onHomeClick }) {
                         <div className="product-list">
                            
                             {category.plants.map(plant=>(
-                                <div className="product-card" key= {plant.name}>
+                                <div className="product-card" key={plant.name}>
                                     <div className="product-title">
                                         {plant.name}
                                     </div>
@@ -314,6 +314,7 @@ function ProductList({ onHomeClick }) {
                                         onClick={ ()=>(handleAdd(plant))}
                                         >
                                         {`${added[plant.name]? `Added` : `Add to Cart` }`}
+                                        {console.log(added[plant.name])}
                                     </button>
                                      
                                 </div>

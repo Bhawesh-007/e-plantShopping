@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { useSelector } from 'react-redux';
 
-const selector = useSelector((state)=>(cart))
+
 
 export const CartSlice = createSlice({
   name: 'cart',
@@ -14,7 +14,7 @@ export const CartSlice = createSlice({
            const {name , image , cost } = action.payload;
             //first i have to check wheter this exists in store or not
            const exists = state.items.find((item)=>item.name===name);
-           if(exists)state.items.push({name,image,cost,quantity:1});
+           if(!exists)state.items.push({name,image,cost,quantity:1});
            else {
              exists.quantity++;
            }
